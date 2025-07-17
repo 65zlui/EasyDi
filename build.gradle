@@ -1,0 +1,101 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'com.test.spring'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    google()
+    // Additional repositories for Android dependencies
+    jcenter() // For older Android dependencies
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+dependencies {
+    // Core dependencies - none required for the base library
+    
+    // Optional Android dependencies - using older versions for better compatibility
+//    compileOnly 'androidx.appcompat:appcompat:1.4.1'
+//    compileOnly 'androidx.lifecycle:lifecycle-viewmodel:2.4.1'
+//    compileOnly 'androidx.fragment:fragment:1.4.1'
+//
+    // Test dependencies
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'EasyDi'
+                description = 'A lightweight dependency injection framework for Java and Android'
+                url = 'https://github.com/yourusername/easydi'
+                
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id = 'yourusername'
+                        name = 'Your Name'
+                        email = 'your.email@example.com'
+                    }
+                }
+                
+                scm {
+                    connection = 'scm:git:git://github.com/yourusername/easydi.git'
+                    developerConnection = 'scm:git:ssh://github.com/yourusername/easydi.git'
+                    url = 'https://github.com/yourusername/easydi'
+                }
+            }
+        }
+    }
+    
+    repositories {
+        maven {
+            name = 'localRepo'
+            url = "${buildDir}/repo"
+        }
+    }
+}
